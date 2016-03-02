@@ -26,8 +26,6 @@ Gradle version 2.8
 
 * [glide](https://github.com/bumptech/glide)
 
-* [NineOldAndroid](http://nineoldandroids.com/)
-
 * [realm](https://realm.io/cn)
 
 
