@@ -1,6 +1,6 @@
 # DailyMenu
 
-Query recipes by juhe API
+Query recipes by juhe.cn API
 
 ## Run Environment
 
