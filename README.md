@@ -1,6 +1,6 @@
 # DailyMenu
 
-通过调用聚合API实现菜谱查询
+Query recipes by juhe API
 
 ## Run Environment
 
@@ -9,6 +9,12 @@ Min SDK verison 4.0+
 Android Studio version 1.5.1
 
 Gradle version 2.8
+
+## Preview
+
+[Download Demo](http://fir.im/lwx4)
+
+![DailyMenu gif demo](https://raw.githubusercontent.com/MrSunly/DailyMenu/master/pic/1.gif)
 
 ## Open source projects
 
