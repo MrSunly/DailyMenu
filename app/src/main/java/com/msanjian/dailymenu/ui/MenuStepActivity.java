@@ -2,7 +2,6 @@ package com.msanjian.dailymenu.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ import io.realm.RealmResults;
 /**
  * Created by longe on 2016/2/15.
  */
-public class MenuStepActivity extends AppCompatActivity implements RequestListener<String, GlideDrawable> {
+public class MenuStepActivity extends BaseActivity implements RequestListener<String, GlideDrawable> {
 
     @Bind(R.id.imageView)
     ImageView imageView;
@@ -143,7 +142,7 @@ public class MenuStepActivity extends AppCompatActivity implements RequestListen
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         realm.close();
         super.onDestroy();
     }

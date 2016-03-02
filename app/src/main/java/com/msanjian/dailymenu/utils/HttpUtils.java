@@ -1,6 +1,5 @@
 package com.msanjian.dailymenu.utils;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -10,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.msanjian.dailymenu.App;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,20 +18,17 @@ import java.util.Map;
  * Created by longe on 2016/2/13.
  */
 public class HttpUtils {
-    private static RequestQueue requestQueue = null;
+    private static RequestQueue requestQueue = Volley.newRequestQueue(App.getContext());
     private static String TAG = "HttpUtils";
 
-    public static void httpGetRequest(Context context, String url, final HttpUtilCallBack httpUtilCallBack) {
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(context);
-        }
+    public static void httpGetRequest(String url, final HttpUtilCallBack httpUtilCallBack, Object tag) {
 
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 httpUtilCallBack.onFinsh(response);
                 Log.d(TAG, "finish");
-                Log.d(TAG, "onResponse: "+response);
+                Log.d(TAG, "onResponse: " + response);
             }
         };
 
@@ -42,17 +39,13 @@ public class HttpUtils {
             }
         };
 
-
         StringRequest stringRequest = new StringRequest(url, listener, errorListener);
+        stringRequest.setTag(tag);
         requestQueue.add(stringRequest);
-
     }
 
 
-    public static void httpPostRequest(Context context, String url, final HttpUtilCallBack httpUtilCallBack, final String key, final String value) {
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(context);
-        }
+    public static void httpPostRequest(String url, final HttpUtilCallBack httpUtilCallBack, final String key, final String value, Object tag) {
 
         Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -69,16 +62,21 @@ public class HttpUtils {
         };
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, listener, errorListener){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, listener, errorListener) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
+                Map<String, String> map = new HashMap<>();
                 map.put(key, value);
                 return map;
             }
         };
+        stringRequest.setTag(tag);
         requestQueue.add(stringRequest);
 
+    }
+
+    public static void CancelAll(Object tag) {
+        requestQueue.cancelAll(tag);
     }
 
 

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -30,7 +29,7 @@ import butterknife.ButterKnife;
 /**
  * Created by longe on 2016/2/17.
  */
-public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
+public class SearchActivity extends BaseActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener {
 
 
     @Bind(R.id.recyclerViewSearch)
@@ -62,7 +61,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
     private void getDataFromHttp(String menuName) {
 
-        HttpUtils.httpPostRequest(this, ApiUtils.QUERY_URL, new HttpUtils.HttpUtilCallBack() {
+        executePostRequest(ApiUtils.QUERY_URL, new HttpUtils.HttpUtilCallBack() {
             @Override
             public void onFinsh(String response) {
                 handleResponse(response);

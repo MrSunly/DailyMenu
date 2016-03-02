@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -29,7 +28,7 @@ import io.realm.RealmResults;
 /**
  * Created by longe on 2016/2/14.
  */
-public class ImageFragment extends Fragment {
+public class ImageFragment extends BaseFragment {
 
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -109,7 +108,7 @@ public class ImageFragment extends Fragment {
     }
 
     private void getDataFromHttp() {
-        HttpUtils.httpGetRequest(getContext(), ApiUtils.IMAGE_URL + PARENT_ID, new HttpUtils.HttpUtilCallBack() {
+        executeGetRequest(ApiUtils.IMAGE_URL + PARENT_ID, new HttpUtils.HttpUtilCallBack() {
             @Override
             public void onFinsh(String response) {
                 handleResponse(response);

@@ -11,8 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +32,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemClickListener {
 
     @Bind(R.id.listView)
     ListView listView;
@@ -52,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private MyDrawerLeftAdapter myDrawerLeftAdapter;
     private boolean categoryStatus = false;
     private ActionBar actionBar;
+    private Menu mMenu;
 
 
     @Override
@@ -95,11 +94,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                mMenu.findItem(R.id.actionSearchButton).setVisible(false);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                mMenu.findItem(R.id.actionSearchButton).setVisible(true);
             }
         };
         actionBarDrawerToggle.setHomeAsUpIndicator(R.drawable.drawer_left_selector);
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void initCategoryData() {
         Log.d(TAG, "initDrawerLeftData: ");
-        HttpUtils.httpGetRequest(this, ApiUtils.CATEGORY_URL, getCallback());
+        executeGetRequest(ApiUtils.CATEGORY_URL, getCallback());
         parentCategory = mRealm.where(Category.class).equalTo("parentId", "0").findAll();
     }
 
@@ -163,10 +164,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         fragmentManager.beginTransaction().replace(viewId, fragment).commit();
     }
 
-    protected void replaceFragmentAddToBackStack(int viewId, Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(viewId, fragment).addToBackStack(null).commit();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -178,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -205,21 +203,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         actionBarDrawerToggle.syncState();
     }
 
-    @Override
-    protected void onDestroy() {
-        mRealm.close();
-        super.onDestroy();
-    }
 
     @Override
-    public boolean onQueryTextSubmit(String query) {
-//        replaceFragmentAddToBackStack(R.id.container, SearchFragment.newInstance(query));
-
-        return false;
+    public void onDestroy() {
+            mRealm.close();
+            super.onDestroy();
     }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
-    }
 }
